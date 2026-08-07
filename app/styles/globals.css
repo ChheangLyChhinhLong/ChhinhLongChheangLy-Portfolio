@@ -1,0 +1,149 @@
+@import "prism.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  background-color: #f4f6fb;
+  color: #18181b;
+}
+
+.dark body {
+  background-color: #09090b;
+  color: #f4f4f5;
+}
+
+.bg-mesh-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(20, 184, 166, 0.09) 0%, transparent 40%),
+    radial-gradient(circle at 50% 48%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+}
+
+.dark .bg-mesh-glow {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 60%);
+}
+
+::selection {
+  background: rgba(129, 140, 248, 0.35);
+  color: inherit;
+}
+
+@layer components {
+  .glass {
+    @apply border border-black/[0.07] bg-white/[0.72] shadow-glass backdrop-blur-md lg:bg-white/[0.62] lg:backdrop-blur-2xl dark:border-white/[0.1] dark:bg-white/[0.08] lg:dark:bg-white/[0.06];
+  }
+
+  .glass-strong {
+    @apply border border-black/[0.08] bg-white/[0.86] shadow-glass backdrop-blur-md lg:bg-white/[0.78] lg:backdrop-blur-2xl dark:border-white/[0.12] dark:bg-[#141419]/[0.9] lg:dark:bg-[#141419]/[0.78];
+  }
+
+  .ios-button {
+    min-height: 44px;
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-black/[0.08] px-5 py-2.5 text-sm font-semibold tracking-tight transition duration-200 ease-out active:scale-95 dark:border-white/[0.12];
+  }
+
+  .ios-button-primary {
+    @apply ios-button border-transparent bg-zinc-950 text-white shadow-[0_12px_30px_rgba(24,24,27,0.2)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(24,24,27,0.28)] dark:bg-white dark:text-zinc-950;
+  }
+
+  .page-shell {
+    @apply mx-auto w-full max-w-7xl px-4 pb-8 pt-16 sm:px-5 sm:pt-20 md:px-8 lg:pt-28 xl:px-10;
+  }
+
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-[0.68rem] font-bold uppercase tracking-[0.22em] text-indigo-500 dark:text-indigo-300;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-indigo-500 via-violet-500 to-teal-400 bg-clip-text text-transparent;
+  }
+}
+
+@supports (padding: max(0px)) {
+  .safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--incognito), "Inter", sans-serif;
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+main,
+section,
+article,
+aside {
+  min-width: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #818cf8;
+  outline-offset: 4px;
+}
+
+.path {
+  stroke-dasharray: 500px 100px;
+  animation: animate 100s linear infinite alternate-reverse;
+}
+
+@keyframes animate {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: 12433.8193359375;
+  }
+}
