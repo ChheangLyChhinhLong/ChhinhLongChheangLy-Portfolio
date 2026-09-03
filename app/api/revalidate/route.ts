@@ -6,6 +6,7 @@ import { parseBody } from "next-sanity/webhook";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
+export const maxDuration = 10; // កំណត់ maxDuration ត្រង់នេះសម្រាប់ Vercel Serverless Function
 
 export async function POST(req: NextRequest) {
   if (!sanityHookSecret) {
