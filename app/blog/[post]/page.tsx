@@ -21,7 +21,7 @@ import PageHeading from "@/app/components/shared/PageHeading";
 import { brandName, siteUrl } from "../../data/site";
 import ReadingProgress from "../../components/shared/ReadingProgress";
 import { siteConfig } from "@/lib/env";
-import { getFeaturedBlogPosts } from "@/lib/blog-posts";
+import { getAllPublishedBlogPosts, getFeaturedBlogPosts } from "@/lib/blog-posts";
 import { paywayConfig } from "@/lib/server-env";
 
 type Props = {
@@ -85,13 +85,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Post({ params }: Props) {
   const slug = params.post;
-  const [post, featuredPosts] = await Promise.all([
+  const [post, featuredPosts, allPosts] = await Promise.all([
     sanityFetch<PostType>({
       query: singlePostQuery,
       tags: ["Post"],
       qParams: { slug },
     }),
     getFeaturedBlogPosts(),
+    getAllPublishedBlogPosts(),
   ]);
 
   if (!post) {
@@ -99,6 +100,9 @@ export default async function Post({ params }: Props) {
   }
 
   const words = toPlainText(post.body);
+  const currentIndex = allPosts.findIndex((item) => item.slug === post.slug);
+  const previousPost = currentIndex >= 0 ? allPosts[currentIndex + 1] : undefined;
+  const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : undefined;
   const headings = post.body.filter((block) => block.style === "h2" || block.style === "h3") as Array<{ _key?: string; children?: Array<{ text?: string }> }>;
 
   return (
@@ -143,6 +147,7 @@ export default async function Post({ params }: Props) {
                 <BiSolidTime />
                 <div className="">{readTime(words)}</div>
               </div>
+              {post._updatedAt && post._updatedAt !== post._createdAt ? <div className="text-xs">Updated {formatDate(post._updatedAt)}</div> : null}
             </div>
 
             <PageHeading title={post.title} description={post.description} />
@@ -246,6 +251,29 @@ export default async function Post({ params }: Props) {
           </aside>
         </Slide>
       </article>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.description,
+            image: post.coverImage?.image || fallbackImage,
+            datePublished: post.date || post._createdAt,
+            dateModified: post._updatedAt || post.date || post._createdAt,
+            author: { "@type": "Person", name: post.author.name },
+            mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+            keywords: post.tags,
+          }),
+        }}
+      />
+
+      {(previousPost || nextPost) && <nav className="mt-10 grid gap-4 sm:grid-cols-2" aria-label="Article navigation">
+        {previousPost ? <Link href={`/blog/${previousPost.slug}`} className="glass group rounded-[24px] p-5 transition hover:-translate-y-1"><p className="text-xs font-bold uppercase tracking-[0.16em] text-zinc-400">Previous article</p><p className="mt-3 font-incognito text-xl font-semibold tracking-tight group-hover:text-indigo-500">{previousPost.title}</p></Link> : <span />}
+        {nextPost ? <Link href={`/blog/${nextPost.slug}`} className="glass group rounded-[24px] p-5 text-left transition hover:-translate-y-1 sm:text-right"><p className="text-xs font-bold uppercase tracking-[0.16em] text-zinc-400">Next article</p><p className="mt-3 font-incognito text-xl font-semibold tracking-tight group-hover:text-indigo-500">{nextPost.title}</p></Link> : null}
+      </nav>}
 
       <section
         id="comments"

@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import PageHeading from "@/app/components/shared/PageHeading";
-import PhotoLightbox from "../components/shared/PhotoLightbox";
 import { brandName, siteUrl } from "../data/site";
 import { siteConfig } from "@/lib/env";
 import { photosQuery } from "@/lib/sanity.query";
 import { sanityFetch } from "@/lib/sanity.client";
 import type { PhotoType } from "@/types";
 import EmptyState from "../components/shared/EmptyState";
+import PhotoGallery from "../components/gallery/PhotoGallery";
 
 export const metadata: Metadata = {
   title: `Photos | ${brandName}`,
@@ -29,12 +29,12 @@ export default async function Photos() {
   return (
     <main className="page-shell">
       <PageHeading
-        title="Photos"
-        description="A small visual archive of places, ideas, and moments between builds. Tap any frame to bring it forward."
+        title="Event & Workshop Gallery"
+        description="A visual archive of academic milestones, workshops, technical activities, and project showcases. Filter the moments, then bring any frame forward."
       />
       <section className="my-6 sm:my-8" aria-label="Photo gallery">
         {photos.length > 0 ? (
-          <PhotoLightbox photos={photos} />
+          <PhotoGallery photos={photos} />
         ) : (
           <EmptyState
             value="Photos"

@@ -4,6 +4,7 @@ import type { PortableTextBlock } from "sanity";
 import { sanityFetch } from "@/lib/sanity.client";
 import {
   featuredPostsQuery,
+  allPublishedBlogPostsQuery,
   initialBlogPostsQuery,
   paginatedBlogPostsQuery,
   publishedBlogPostsCountQuery,
@@ -53,6 +54,15 @@ export async function getInitialBlogPosts() {
 export async function getFeaturedBlogPosts() {
   const posts = await sanityFetch<BlogPostQueryResult[]>({
     query: featuredPostsQuery,
+    tags: ["Post"],
+  });
+
+  return normalizePosts(posts);
+}
+
+export async function getAllPublishedBlogPosts() {
+  const posts = await sanityFetch<BlogPostQueryResult[]>({
+    query: allPublishedBlogPostsQuery,
     tags: ["Post"],
   });
 

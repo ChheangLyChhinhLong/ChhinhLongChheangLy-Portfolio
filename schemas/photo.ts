@@ -40,6 +40,20 @@ export default defineType({
       type: "boolean",
       initialValue: false,
     }),
+    defineField({
+      name: "category",
+      title: "Category",
+      type: "string",
+      options: {
+        list: ["Workshops", "Academic & University", "Projects & Demos", "Certificates"],
+      },
+    }),
+    defineField({
+      name: "description",
+      title: "Description",
+      type: "text",
+      rows: 3,
+    }),
   ],
   preview: {
     select: {

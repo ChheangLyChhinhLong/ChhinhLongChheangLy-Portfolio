@@ -51,6 +51,13 @@ export const projectsQuery = groq`*[_type == "project"] | order(_createdAt desc)
   "slug": slug.current,
   tagline,
   "logo": logo.asset->url,
+  projectUrl,
+  repository,
+  coverImage {
+    "image": asset->url,
+    "lqip": asset->metadata.lqip,
+    alt,
+  },
 }`;
 
 export const singleProjectQuery = groq`*[_type == "project" && slug.current == $slug][0]{
@@ -102,6 +109,13 @@ export const initialBlogPostsQuery = groq`
     }
 `;
 
+export const allPublishedBlogPostsQuery = groq`
+  *[_type == "Post" && isPublished == true && defined(slug.current)]
+    | order(coalesce(date, _createdAt) desc) {
+      ${blogPostPreviewFields}
+    }
+`;
+
 export const paginatedBlogPostsQuery = groq`
   *[_type == "Post" && isPublished == true && defined(slug.current)]
     | order(coalesce(date, _createdAt) desc)[$start...$end] {
@@ -146,6 +160,8 @@ export const photosQuery = groq`
     location,
     takenAt,
     featured,
+    category,
+    description,
     "imageUrl": image.asset->url,
     "blurDataURL": image.asset->metadata.lqip,
     "dimensions": image.asset->metadata.dimensions

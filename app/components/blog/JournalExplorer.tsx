@@ -1,0 +1,24 @@
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import { useMemo, useState } from "react";
+import { BiRightTopArrowCircle, BiSearch, BiSolidTime, BiX } from "react-icons/bi";
+import { HiCalendar } from "react-icons/hi";
+import type { BlogPostPreview } from "@/types";
+import { formatDate } from "../../utils/date";
+import { siteConfig } from "@/lib/env";
+
+type JournalExplorerProps = { posts: BlogPostPreview[] };
+
+export default function JournalExplorer({ posts }: JournalExplorerProps) {
+  const [query, setQuery] = useState("");
+  const [tag, setTag] = useState("All");
+  const tags = useMemo(() => ["All", ...Array.from(new Set(posts.flatMap((post) => post.tags ?? []))).slice(0, 8)], [posts]);
+  const visiblePosts = useMemo(() => posts.filter((post) => {
+    const haystack = `${post.title} ${post.description} ${(post.tags ?? []).join(" ")}`.toLowerCase();
+    return (tag === "All" || post.tags?.includes(tag)) && haystack.includes(query.trim().toLowerCase());
+  }), [posts, query, tag]);
+
+  return <section aria-labelledby="journal-archive-heading"><div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="eyebrow mb-3">The archive</p><h2 id="journal-archive-heading" className="font-incognito text-3xl font-semibold tracking-[-0.045em] sm:text-4xl">Explore all notes.</h2></div><p className="text-sm text-zinc-500 dark:text-zinc-400">{visiblePosts.length} {visiblePosts.length === 1 ? "article" : "articles"}</p></div><div className="mb-7 space-y-4"><div className="glass flex min-h-[52px] items-center gap-3 rounded-2xl px-4"><BiSearch className="text-xl text-indigo-500" /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search titles, ideas, or technologies..." aria-label="Search journal posts" className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-zinc-400" />{query && <button type="button" onClick={() => setQuery("")} className="tap-target grid place-items-center text-zinc-400" aria-label="Clear journal search"><BiX className="text-xl" /></button>}</div><div className="flex gap-2 overflow-x-auto pb-2 touch-scroll" role="tablist" aria-label="Filter journal by tag">{tags.map((item) => <button type="button" role="tab" aria-selected={tag === item} key={item} onClick={() => setTag(item)} className={`min-h-[44px] shrink-0 rounded-full px-4 text-sm font-semibold transition active:scale-95 ${tag === item ? "bg-zinc-950 text-white dark:bg-white dark:text-zinc-950" : "border border-black/[0.08] bg-white/40 text-zinc-500 dark:border-white/[0.1] dark:bg-white/[0.05]"}`}>{item === "All" ? "All notes" : `#${item}`}</button>)}</div></div>{visiblePosts.length ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{visiblePosts.map((post) => <article key={post._id} className="glass group overflow-hidden rounded-[26px] transition duration-300 hover:-translate-y-1"><Link href={`/blog/${post.slug}`} className="block"><div className="relative aspect-[16/9] overflow-hidden bg-zinc-200 dark:bg-zinc-900"><Image src={post.mainImage?.image || siteConfig.blogOgImage} alt={post.mainImage?.alt || post.title} fill sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-105" placeholder={post.mainImage?.lqip ? "blur" : "empty"} blurDataURL={post.mainImage?.lqip || undefined} /><span className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-full border border-white/20 bg-black/25 text-xl text-white backdrop-blur-md"><BiRightTopArrowCircle /></span></div><div className="p-5"><p className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-indigo-500 dark:text-indigo-300">{post.tags?.[0] || "Journal"}</p><h3 className="line-clamp-2 text-xl font-semibold leading-tight tracking-[-0.03em]">{post.title}</h3><p className="mt-3 line-clamp-2 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">{post.description}</p><div className="mt-5 flex flex-wrap items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400"><span className="flex items-center gap-1.5"><HiCalendar />{formatDate(post.publishedAt)}</span><span className="flex items-center gap-1.5"><BiSolidTime />{post.readingTime}</span></div></div></Link></article>)}</div> : <div className="glass rounded-[28px] p-10 text-center"><p className="text-lg font-semibold">No notes found</p><p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">Try a different search term or tag.</p><button type="button" onClick={() => { setQuery(""); setTag("All"); }} className="ios-button-primary mt-6">Clear filters</button></div>}</section>;
+}

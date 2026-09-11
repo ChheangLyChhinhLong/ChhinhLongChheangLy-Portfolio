@@ -79,6 +79,19 @@ body {
   .text-gradient {
     @apply bg-gradient-to-r from-indigo-500 via-violet-500 to-teal-400 bg-clip-text text-transparent;
   }
+
+  .field-label {
+    @apply block text-xs font-bold uppercase tracking-[0.16em] text-zinc-500 dark:text-zinc-400;
+  }
+
+  .field-label input,
+  .field-label textarea {
+    @apply mt-2 block w-full rounded-2xl border border-black/[0.08] bg-black/[0.03] px-4 py-3.5 text-base font-normal normal-case tracking-normal text-zinc-900 outline-none transition placeholder:text-zinc-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-500/10 dark:border-white/[0.1] dark:bg-white/[0.05] dark:text-white dark:placeholder:text-zinc-500;
+  }
+
+  .field-label textarea {
+    resize: vertical;
+  }
 }
 
 @supports (padding: max(0px)) {
@@ -146,4 +159,9 @@ a:focus-visible {
   to {
     stroke-dashoffset: 12433.8193359375;
   }
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-38%); }
 }

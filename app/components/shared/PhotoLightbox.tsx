@@ -23,6 +23,7 @@ import {
   HiOutlineX,
 } from "react-icons/hi";
 import type { PhotoType } from "@/types";
+import { inferPhotoCategory } from "@/app/data/photos";
 
 type MotionDivProps = Omit<HTMLAttributes<HTMLDivElement>, keyof MotionProps> &
   MotionProps;
@@ -110,6 +111,7 @@ export default function PhotoLightbox({ photos }: { photos: PhotoType[] }) {
         {photos.map((photo, index) => {
           const aspectRatio = getAspectRatio(photo);
           const date = formatTakenAt(photo.takenAt);
+          const category = photo.category || inferPhotoCategory(photo.title, photo.location);
 
           return (
             <MotionButton
@@ -135,6 +137,9 @@ export default function PhotoLightbox({ photos }: { photos: PhotoType[] }) {
                 <span className="block rounded-xl border border-white/10 bg-black/30 px-3 py-2 backdrop-blur-md">
                   <span className="block truncate text-sm font-semibold">
                     {photo.title}
+                  </span>
+                  <span className="mt-1 inline-flex rounded-full bg-indigo-400/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-indigo-100">
+                    {category}
                   </span>
                   {photo.location || date ? (
                     <span className="mt-0.5 block truncate text-[11px] text-white/75">
@@ -277,6 +282,12 @@ export default function PhotoLightbox({ photos }: { photos: PhotoType[] }) {
                     ) : null}
                   </div>
                 ) : null}
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <span className="rounded-full bg-indigo-400/20 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-indigo-100">
+                    {selected.category || inferPhotoCategory(selected.title, selected.location)}
+                  </span>
+                  {selected.description ? <p className="basis-full text-xs leading-relaxed text-white/70 sm:text-sm">{selected.description}</p> : null}
+                </div>
               </div>
             </MotionDiv>
           </MotionDiv>

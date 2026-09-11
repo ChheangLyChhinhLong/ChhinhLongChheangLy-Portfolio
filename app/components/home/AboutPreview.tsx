@@ -1,0 +1,7 @@
+import Link from "next/link";
+import { BiArrowToRight, BiCheck } from "react-icons/bi";
+import { fullName } from "../../data/site";
+
+export default function AboutPreview({ bio }: { bio?: string }) {
+  return <section className="mt-24 grid gap-8 rounded-[30px] border border-black/[0.06] bg-black/[0.025] p-6 dark:border-white/[0.08] dark:bg-white/[0.025] sm:p-9 lg:grid-cols-[1fr_0.85fr] lg:items-center"><div><p className="eyebrow mb-3">A little context</p><h2 className="max-w-2xl font-incognito text-3xl font-semibold leading-tight tracking-[-0.045em] sm:text-4xl">The best interfaces make complex things feel human.</h2><p className="mt-5 max-w-xl leading-relaxed text-zinc-500 dark:text-zinc-400">{bio ?? `${fullName} builds scalable web experiences with an eye for clarity, speed, and the small details people remember.`}</p><Link href="/about" className="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-indigo-500 transition hover:text-indigo-400">More about me <BiArrowToRight /></Link></div><ul className="grid gap-3 text-sm text-zinc-600 dark:text-zinc-300 sm:grid-cols-2 lg:grid-cols-1">{["Designing useful product experiences", "Building reliable full-stack systems", "Learning in public and sharing the work"].map((item) => <li key={item} className="flex items-center gap-3"><span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald-500/10 text-emerald-500"><BiCheck /></span>{item}</li>)}</ul></section>;
+}

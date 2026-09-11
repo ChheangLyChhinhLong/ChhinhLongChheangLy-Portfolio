@@ -10,11 +10,13 @@
     "type-check": "tsc --noEmit",
     "typecheck": "tsc --noEmit --incremental false",
     "validate:env": "node scripts/validate-env.mjs",
+    "telegram:bot": "tsx scripts/telegram-bot.ts",
     "check": "npm run validate:env && npm run lint && npm run typecheck",
     "ci": "npm run check && npm run build"
   },
   "dependencies": {
     "@giscus/react": "^2.3.0",
+    "@google/genai": "^2.22.0",
     "@portabletext/react": "^3.0.11",
     "@sanity/code-input": "^4.1.1",
     "@sanity/image-url": "^1.0.2",
@@ -23,9 +25,12 @@
     "@vercel/analytics": "^1.0.1",
     "autoprefixer": "^10.4.15",
     "framer-motion": "^10.16.0",
+    "franc-min": "^6.2.0",
+    "grammy": "^1.46.0",
     "next": "^14.2.3",
     "next-sanity": "^7.0.4",
     "next-themes": "^0.2.1",
+    "openai": "^7.15.0",
     "postcss": "^8.4.31",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -44,6 +49,7 @@
     "@types/refractor": "^3.0.2",
     "eslint": "^8.45.0",
     "eslint-config-next": "^14.0.4",
+    "tsx": "^4.23.13",
     "typescript": "^5.3.3"
   }
 }

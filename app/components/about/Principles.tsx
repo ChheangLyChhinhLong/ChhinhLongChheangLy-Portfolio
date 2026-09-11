@@ -1,0 +1,7 @@
+import { BiBrush, BiGitBranch, BiTrendingUp } from "react-icons/bi";
+
+const principles = [{ title: "Clean code, calm architecture", detail: "Modular boundaries and clear names make software easier to change, explain, and trust.", icon: BiGitBranch }, { title: "Continuous improvement", detail: "Every project is a chance to sharpen fundamentals, explore better tools, and document the lesson.", icon: BiTrendingUp }, { title: "User-centric focus", detail: "Good interfaces respect attention. Solid logic should make the right action feel obvious.", icon: BiBrush }];
+
+export default function Principles() {
+  return <section className="mt-24" aria-labelledby="principles-heading"><div className="mb-8 max-w-2xl"><p className="eyebrow mb-3">How I work</p><h2 id="principles-heading" className="font-incognito text-4xl font-semibold tracking-[-0.05em] sm:text-5xl">Principles over shortcuts.</h2></div><div className="grid gap-4 md:grid-cols-3">{principles.map(({ title, detail, icon: Icon }) => <article key={title} className="rounded-[24px] border border-black/[0.06] bg-black/[0.025] p-5 dark:border-white/[0.08] dark:bg-white/[0.025]"><Icon className="text-3xl text-indigo-500" /><h3 className="mt-8 text-xl font-semibold tracking-tight">{title}</h3><p className="mt-3 text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">{detail}</p></article>)}</div></section>;
+}

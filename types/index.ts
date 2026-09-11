@@ -121,6 +121,8 @@ export type PhotoType = {
   location?: string;
   takenAt?: string;
   featured: boolean;
+  category?: "Workshops" | "Academic & University" | "Projects & Demos" | "Certificates";
+  description?: string;
   imageUrl: string;
   blurDataURL?: string;
   dimensions?: {
