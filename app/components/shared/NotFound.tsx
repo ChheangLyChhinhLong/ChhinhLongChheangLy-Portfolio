@@ -1,7 +1,8 @@
 import Image from "next/image";
-import duckImage from "@/public/searching-duck.gif";
 import FeaturedPosts from "../pages/FeaturedPosts";
 import { getFeaturedBlogPosts } from "@/lib/blog-posts";
+
+const duckImage = "/searching-duck.gif";
 
 type props = {
   title: string;

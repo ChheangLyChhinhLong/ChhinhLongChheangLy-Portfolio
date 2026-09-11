@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import funImage from "@/public/yeah-right.png";
 import { BiCheckbox, BiSolidCheckboxChecked } from "react-icons/bi";
+
+const funImage = "/yeah-right.png";
 
 export default function EasterEgg({ isMet }: { isMet: boolean }) {
   const [image, setImage] = useState(false);
